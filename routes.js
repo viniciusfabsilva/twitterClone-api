@@ -12,7 +12,11 @@ router.get('/tweets', async ctx => {
   const [, token] = ctx.request.headers?.authorization?.split(' ') || []
   try {
     jwt.verify(token, process.env.JWT_SECRET) // verifica o token do usuário
-    const tweets = await prisma.tweet.findMany()
+    const tweets = await prisma.tweet.findMany({
+      include: {          // esse include é feito para ele relacionar a tabela user com a tabela tweet
+        user: true,
+      },
+    })
     ctx.body = tweets
 
   } catch (error) {
@@ -42,8 +46,12 @@ router.post('/tweets', async ctx => {
     ctx.body = tweet
   
   } catch (error) {
+    if(typeof error === 'JsonWebTokenError') {
     ctx.status = 401
     return
+    }
+
+    ctx.status = 500
   }
 
 })
