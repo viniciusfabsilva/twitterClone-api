@@ -8,6 +8,9 @@
     "name": "Vinicius Silva",
     "email": "viniciusfabi1@gmail.com"
   },
+  "scripts": {
+    "start": "node api/index.js"
+  },
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^3.3.0",
